@@ -14,6 +14,18 @@ services:
     networks:
       - aeye_network
     command: python manage.py runserver 0.0.0.0:2000
+  AEYE-SQL:
+    image: mysql:5.7
+    container_name: web_sql_container
+    environment:
+      MYSQL_ROOT_PASSWORD: my-secret-pw
+      MYSQL_DATABASE: mydatabase
+      MYSQL_USER: myuser
+      MYSQL_PASSWORD: mypassword
+    volumes:
+      - ../AEYE_MYSQL:/var/lib/mysql
+  ports:
+  - "3306:3306"
     
 networks:
   aeye_network:
