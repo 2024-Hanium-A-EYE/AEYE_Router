@@ -43,6 +43,7 @@ INSTALLED_APPS = [
 
     'hal',
     'mw',
+    'api',
     'rest_framework',
 ]
 
