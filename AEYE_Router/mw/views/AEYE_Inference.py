@@ -98,20 +98,12 @@ def aeye_ai_inference_request(image, url):
 
 def aeye_create_json_files(whoami, image):
     
-    h5_file_path = os.path.join(os.path.dirname(__file__), 'weight', 'Srinivasan2014.h5')
-
-    try:
-        h5_file = open(h5_file_path, 'rb')
-        files = {
+    files = {
             'image': (image.name, image.read(), image.content_type),
-            'weight': ('model.h5', h5_file, 'application/octet-stream'),
         }
-        print_log('active', whoami, mw, "Succeeded to add image and h5 files to JSON files")
-        return files
-    except Exception as e:
-        print_log('error', whoami, mw, "Failed to add image and h5 files to JSON files: {}".format(str(e)))
-        return 400
-
+    print_log('active', whoami, mw, "Succeeded to add image file to JSON files")
+    
+    return files
 
 def aeye_get_data_from_response(reponse):
     response_data = reponse.json()

@@ -26,7 +26,7 @@ def print_log(status, whoami, mw, message) :
 
 hal = 'hal - Inference'
 
-url = 'http://127.0.0.1:2000/hal/ai-inference/'
+url = ''
 class aeye_inference_Viewswets(viewsets.ModelViewSet):
     queryset=aeye_inference_models.objects.all().order_by('id')
     serializer_class=aeye_inference_serializers
