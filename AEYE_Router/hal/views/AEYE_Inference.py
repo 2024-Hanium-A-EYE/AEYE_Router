@@ -9,22 +9,22 @@ from datetime import datetime
 import requests
 import os
 
-def print_log(status, whoami, mw, message) :
+def print_log(status, whoami, hal, message) :
     now = datetime.now()
     current_time = now.strftime("%Y-%m-%d %H:%M:%S")
 
     if status == "active" :
         print("\n-----------------------------------------\n"   + 
-              current_time + " " + whoami + Fore.BLUE + "[ " + mw + " ]\n" +  Fore.RESET +
+              current_time + " [ " + whoami + " ] send to : " + Fore.BLUE + "[ " + hal + " ]\n" +  Fore.RESET +
               Fore.GREEN + "[WEB Router - active] " + Fore.RESET + "message: [ " + Fore.GREEN + message +" ]" + Fore.RESET +
               "\n-----------------------------------------")
     elif status == "error" :
         print("\n-----------------------------------------\n"   + 
-              current_time + " " + whoami + Fore.BLUE + "[ " + mw + " ]\n" +  Fore.RESET +
+              current_time + " [ " + whoami + " ] send to : " + "[ " + hal + " ]\n" +  Fore.RESET +
               Fore.RED + "[WEB Router - error] " + Fore.RESET + "message: [ " + Fore.RED + message +" ]" + Fore.RESET +
               "\n-----------------------------------------")
 
-hal = 'hal - Inference'
+i_am_hal_infer = 'HAL - Inference'
 
 url = ''
 class aeye_inference_Viewswets(viewsets.ModelViewSet):
@@ -37,17 +37,24 @@ class aeye_inference_Viewswets(viewsets.ModelViewSet):
         if serializer.is_valid() :
             whoami    = serializer.validated_data.get('whoami')
             message   = serializer.validated_data.get('message')
-            print_log('active', whoami, hal, "Succeed to Received Data : {}".format(message))
+            print_log('active', whoami, i_am_hal_infer, "Succeed to Received Data : {}".format(message))
 
             image = request.FILES.get('image')
-            response = aeye_ai_inference_request(image, url)
-
+            data={
+                'whoami' : i_am_hal_infer,
+                'message': "GG"
+            }
+            return Response(data, status=status.HTTP_200_OK)
+            # response = aeye_ai_inference_request(image, url)
+            '''
             if response.status_code==200:
                 return response
             else:
                 return response
+            '''
+            
         else:
-            print_log('error', 'HAL - Inference', hal, "Failed to Received Data : {}".format(request.data))
+            print_log('error', 'HAL - Inference', i_am_hal_infer, "Failed to Received Data : {}".format(serializer.errors))
 
             message = "Client Sent Invalid Data"
             data = aeye_create_json_data(message)
@@ -59,34 +66,34 @@ def aeye_ai_inference_request(image, url):
     whoami = 'AEYE Router MW Inference'
     files = aeye_create_json_files(whoami, image)
     data = {
-        'whoami' : 'AEYE Router HAL Inference',
+        'whoami' : i_am_hal_infer,
         'operation' : 'Inference',
         'message' : 'Request AI Inference',
     }
 
     if files!=400:
-        print_log('active', whoami, hal, "Send Data to : {}".format(url))
+        print_log('active', whoami, i_am_hal_infer, "Send Data to : {}".format(url))
         response = requests.post(url, data=data, files=files)
 
         if response.status_code==200:
             response_data = response.json()
-            print_log('active', whoami, hal, "Received Data from the Server : {}".format(response_data))
+            print_log('active', whoami, i_am_hal_infer, "Received Data from the Server : {}".format(response_data))
             #whoami, message = aeye_get_data_from_response(response_data)
             whoami  = response_data.get('whoami')
             message = response_data.get('message')
             
-            print_log('active', whoami, hal, "Succedd to Receive Data : {}".format(message) )
+            print_log('active', whoami, i_am_hal_infer, "Succedd to Receive Data : {}".format(message) )
             data = aeye_create_json_data(message)
 
             return  Response(data, status=status.HTTP_200_OK)
         else:
-            print_log('error', whoami, hal, "Failed to Receive Data : {}".format(message) )
+            print_log('error', whoami, i_am_hal_infer, "Failed to Receive Data : {}".format(message) )
 
             message = "Failed to Get Response For the Server"
             data = aeye_create_json_data(message)
             return Response(data, status=status.HTTP_400_BAD_REQUEST)
     else:
-        print_log('error', whoami, hal, "Failed to Create Data : {}".format(files) )
+        print_log('error', whoami, i_am_hal_infer, "Failed to Create Data : {}".format(files) )
 
         message = "Failed to Add image and files to Json files"
         data = aeye_create_json_data(message)

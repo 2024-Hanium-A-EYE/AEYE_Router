@@ -81,17 +81,24 @@ WSGI_APPLICATION = 'AEYE_Router.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/3.2/ref/settings/#databases
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'mydatabase',
-        'USER': 'myuser',
-        'PASSWORD': 'mypassword',
-        'HOST': 'web_sql_container',  # 또는 원격 MySQL 서버의 IP 주소
-        'PORT': '3306',
+if DEBUG:
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.sqlite3',
+            'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        }
     }
-}
-
+else:
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.mysql',
+            'NAME': 'your_database_name',
+            'USER': 'your_username',
+            'PASSWORD': 'your_password',
+            'HOST': 'localhost',
+            'PORT': '3306',
+        }
+    }
 
 
 

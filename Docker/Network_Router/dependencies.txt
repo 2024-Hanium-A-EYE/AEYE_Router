@@ -31,3 +31,6 @@ pillow
 
 # mysqlclient
 mysqlclient
+
+asyncio
+aiohttp
