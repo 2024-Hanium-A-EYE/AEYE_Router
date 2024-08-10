@@ -30,6 +30,7 @@ i_am_api_wno = 'Router API - WNO'
 
 url_server       = 'http://127.0.0.1:2000/'
 mw_ai_inference  = 'mw/ai-inference/'
+mw_database      = 'mw/database/'
 
 class aeye_wno_Viewsets(viewsets.ModelViewSet):
     queryset=aeye_wno_models.objects.all().order_by('id')
@@ -67,11 +68,34 @@ class aeye_wno_Viewsets(viewsets.ModelViewSet):
                 pass
             elif operation_client=='Test':
                 pass
-            elif operation_client=='database':
-                pass
-                        
-        else :
-            return Response('["ERROR"] WEB Server is Not Working!', status = status.HTTP_400_BAD_REQUEST)
+            elif operation_client=='DataBase Write' or 'DataBase Read':
+                response = aeye_database_requst(operation_client)
+
+                if response.status_code==200:
+                    message='succeed to reacive data from : {}{}'.format(url_server, mw_database)
+                    print_log("active", i_am_api_wno, i_am_api_wno, message)
+                    message="GODD"
+                    data={
+                        'whoami' : i_am_api_wno,
+                        'message': message 
+                    }
+                    return Response(data, status=status.HTTP_200_OK)  
+                else:
+                    message="failed to Reacive data from : {}{}".format(url_server, mw_database)
+                    data={
+                        'whoami' : i_am_api_wno,
+                        'message': message
+                    } 
+                    print('error', i_am_api_wno, i_am_api_wno, message)
+                    return Response(data, status=status.HTTP_400_BAD_REQUEST)
+        else:
+            message="Reacived Invalid data : {}".format(serializer.errors)
+            data={
+                'whoami' : i_am_api_wno,
+                'message': message
+            }
+            print_log('error', i_am_api_wno, i_am_api_wno, message)
+            return Response(data, status = status.HTTP_400_BAD_REQUEST)
     
 
 async def aeye_ai_inference_request(i_am_client : str, image):
@@ -89,3 +113,19 @@ async def aeye_ai_inference_request(i_am_client : str, image):
             result_from_server = await response_from_server.json()
 
     return result_from_server
+
+
+def aeye_database_requst(operation_client):
+    message='request data to : {}{}'.format(url_server, mw_database)
+    print_log('active', i_am_api_wno, i_am_api_wno, message)
+
+    message='Request DataBase'
+    data={
+        'whoami'       : i_am_api_wno,
+        'message'      : message,
+        'operation'    : operation_client,
+        'request_data' : "None"
+    }
+    url='{}{}'.format(url_server, mw_database)
+    response_server = requests.post(url, data=data)
+    return response_server
