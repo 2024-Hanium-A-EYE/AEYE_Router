@@ -56,7 +56,7 @@ class aeye_inference_Viewswets(viewsets.ModelViewSet):
             '''
             
         else:
-            print_log('error', 'HAL - Inference', i_am_hal_infer, "Failed to Received Data : {}".format(serializer.errors))
+            print_log('error', i_am_hal_infer, i_am_hal_infer, "Failed to Received Data : {}".format(serializer.errors))
 
             message = "Client Sent Invalid Data"
             data = aeye_create_json_data(message)
