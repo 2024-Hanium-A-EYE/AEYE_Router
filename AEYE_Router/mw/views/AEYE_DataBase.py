@@ -2,8 +2,8 @@ from django.shortcuts import render
 from rest_framework.response import Response
 from rest_framework import viewsets
 from rest_framework import status
-from .models import aeye_database__models
-from .serializers import aeye__database_serializers
+from .models import aeye_database_models
+from .serializers import aeye_database_serializers
 from colorama import Fore, Back, Style
 from datetime import datetime
 import requests
@@ -31,12 +31,12 @@ hal_data_write = 'hal/database-write/'
 hal_data_read  = 'hal/database-read/'
 
 
-class aeye_inference_Viewswets(viewsets.ModelViewSet):
-    queryset=aeye_database__models.objects.all().order_by('id')
-    serializer_class=aeye__database_serializers
+class aeye_database_Viewsets(viewsets.ModelViewSet):
+    queryset=aeye_database_models.objects.all().order_by('id')
+    serializer_class=aeye_database_serializers
 
     def create(self, request) :
-        serializer = aeye__database_serializers(data = request.data)
+        serializer = aeye_database_serializers(data = request.data)
 
         if serializer.is_valid():
             i_am_client         = serializer.validated_data.get('whoami')
