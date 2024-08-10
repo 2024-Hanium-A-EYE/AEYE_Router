@@ -39,21 +39,21 @@ class aeye_wno_Viewsets(viewsets.ModelViewSet):
         serializer = aeye_wno_serializers(data = request.data)
 
         if serializer.is_valid() :
-            i_am_client = serializer.validated_data.get('whoami')
-            operation   = serializer.validated_data.get('operation')
-            message     = serializer.validated_data.get('message')
+            i_am_client      = serializer.validated_data.get('whoami')
+            operation_client = serializer.validated_data.get('operation')
+            message_client   = serializer.validated_data.get('message')
 
-            print_log('active', i_am_client, i_am_api_wno, 'Received Valid Data : {}, Oper: {}'.format(message, operation))
+            print_log('active', i_am_api_wno, i_am_api_wno, 'Received Valid Data : {}, Oper: {}'.format(message_client, operation_client))
             
-            if operation=='Inference' :
+            if operation_client=='Inference' :
                 image = request.FILES.get('image')
 
                 loop = asyncio.new_event_loop()
                 asyncio.set_event_loop(loop)
                 response_from_server = loop.run_until_complete(aeye_ai_inference_request(i_am_client, image))
-                print_log('active', i_am_client, i_am_api_wno, "GGGAA")
-
                 
+                print_log('active', i_am_client, i_am_api_wno, "Succed to Receive Data from : {}{}".format(url_server, mw_ai_inference))
+
                 i_am_server    = response_from_server.get('whoami')
                 server_message = response_from_server.get('message')
 
@@ -63,11 +63,11 @@ class aeye_wno_Viewsets(viewsets.ModelViewSet):
                 } 
                 return Response(data, status=status.HTTP_200_OK)
 
-            elif operation=='Train':
+            elif operation_client=='Train':
                 pass
-            elif operation=='Test':
+            elif operation_client=='Test':
                 pass
-            elif operation=='database':
+            elif operation_client=='database':
                 pass
                         
         else :
@@ -86,7 +86,6 @@ async def aeye_ai_inference_request(i_am_client : str, image):
         form_data.add_field('message', message)
         form_data.add_field('image', image.read(), filename=image.name, content_type=image.content_type)
         async with session.post(url, data=form_data) as response_from_server:
-            result_from_server = await response_from_server
+            result_from_server = await response_from_server.json()
 
-    
-    print_log('active', i_am_client, i_am_api_wno, "Send Data to : {}".format(result_from_server))
+    return result_from_server

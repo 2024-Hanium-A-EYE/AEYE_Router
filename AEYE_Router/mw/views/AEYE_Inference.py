@@ -17,15 +17,15 @@ def print_log(status, whoami, mw, message) :
     if status == "active" :
         print("\n-----------------------------------------\n"   + 
               current_time + " [ " + whoami + " ] send to : " + Fore.BLUE + "[ " + mw + " ]\n" +  Fore.RESET +
-              Fore.GREEN + "[WEB Router - active] " + Fore.RESET + "message: [ " + Fore.GREEN + message +" ]" + Fore.RESET +
+              Fore.GREEN + "[active] " + Fore.RESET + "message: [ " + Fore.GREEN + message +" ]" + Fore.RESET +
               "\n-----------------------------------------")
     elif status == "error" :
         print("\n-----------------------------------------\n"   + 
               current_time + " [ " + whoami + " ] send to : " + Fore.BLUE + "[ " + mw + " ]\n" +  Fore.RESET +
-              Fore.RED + "[WEB Router - error] " + Fore.RESET + "message: [ " + Fore.RED + message +" ]" + Fore.RESET +
+              Fore.RED + "[error] " + Fore.RESET + "message: [ " + Fore.RED + message +" ]" + Fore.RESET +
               "\n-----------------------------------------")
 
-i_am_mw_infer = 'MW - Inference'
+i_am_mw_infer = 'Router MW - Inference'
 
 server_url    = 'http://127.0.0.1:2000/'
 url_hal_infer = 'hal/ai-inference/'

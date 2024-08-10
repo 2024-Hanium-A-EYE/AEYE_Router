@@ -16,17 +16,19 @@ def print_log(status, whoami, hal, message) :
     if status == "active" :
         print("\n-----------------------------------------\n"   + 
               current_time + " [ " + whoami + " ] send to : " + Fore.BLUE + "[ " + hal + " ]\n" +  Fore.RESET +
-              Fore.GREEN + "[WEB Router - active] " + Fore.RESET + "message: [ " + Fore.GREEN + message +" ]" + Fore.RESET +
+              Fore.GREEN + "[active] " + Fore.RESET + "message: [ " + Fore.GREEN + message +" ]" + Fore.RESET +
               "\n-----------------------------------------")
     elif status == "error" :
         print("\n-----------------------------------------\n"   + 
               current_time + " [ " + whoami + " ] send to : " + "[ " + hal + " ]\n" +  Fore.RESET +
-              Fore.RED + "[WEB Router - error] " + Fore.RESET + "message: [ " + Fore.RED + message +" ]" + Fore.RESET +
+              Fore.RED + "[error] " + Fore.RESET + "message: [ " + Fore.RED + message +" ]" + Fore.RESET +
               "\n-----------------------------------------")
 
-i_am_hal_infer = 'HAL - Inference'
+i_am_hal_infer = 'Router HAL - Inference'
 
-url = ''
+server_url=''
+api_ano=''
+
 class aeye_inference_Viewswets(viewsets.ModelViewSet):
     queryset=aeye_inference_models.objects.all().order_by('id')
     serializer_class=aeye_inference_serializers
@@ -106,7 +108,7 @@ def aeye_create_json_files(whoami, image):
     files = {
             'image': (image.name, image.read(), image.content_type),
         }
-    print_log('active', whoami, hal, "Succeeded to add image files to JSON files")
+    print_log('active', whoami, i_am_hal_infer, "Succeeded to add image files to JSON files")
 
     return files
 
@@ -120,11 +122,11 @@ def aeye_get_data_from_response(reponse):
         if message:
             return whoami, message
         else:
-            print_log('error', 'AEYE Router HAL Inference', hal, "Failed to Receive message from the server : {}"
+            print_log('error', i_am_hal_infer, i_am_hal_infer, "Failed to Receive message from the server : {}"
                                                                                             .format(message))
             return 400
     else:
-        print_log('error', 'AEYE Router HAL Inference', hal, "Failed to Receive whoami from the server : {}"
+        print_log('error', i_am_hal_infer, i_am_hal_infer, "Failed to Receive whoami from the server : {}"
                                                                                             .format(whoami))
         return 400
     
