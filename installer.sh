@@ -1,7 +1,7 @@
 #############################################################
-# AEYE AI Installer
+# AEYE WEB Installer
 # Created By Yoonchul Chung
-# Created At 2024.08.03
+# Created At 2024.08.07
 # Welcome to Visit Github : https://github.com/Yoonchulchung
 #############################################################
 
@@ -160,7 +160,7 @@ install() {
           "runtimeArgs": []
         }
       }
-    }
+    }'
     sudo systemctl restart docker
 
     cd Docker

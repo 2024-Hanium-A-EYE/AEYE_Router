@@ -1,40 +1,32 @@
 version: '3.3'
 
 services:
-  AEYE-NetOper:
-    image: aeye_network_operator:1.0
-    container_name: network_operator_container
+  AEYE-Router:
+    image: aeye_web_router:1.0
+    container_name: router_container
     build:
       context: ..
-      dockerfile: Docker/AEYE_Network_Operator/Dockerfile
-    ports:
-    - "3000:3000"
-    volumes:  
-    - ../AEYE_Network_Operator/:/app/
-    tty: true
-    stdin_open: true
-    networks:
-      - ai_network
-    command: python manage.py runserver 0.0.0.0:3000
-    
-  AEYE-OpticNet:
-    image: aeye_opticnet:1.0
-    container_name: opticnet_container
-    build:
-      context: ..
-      dockerfile: Docker/AEYE_AI/Dockerfile
+      dockerfile: Docker/Network_Router/Dockerfile
     ports:
     - "2000:2000"
-    - "6006:6006"
-    - "8888:8888"
-    volumes:
-    - ../AEYE_AI/:/app/AEYE_AI/
-    environment:
-        - PYTHONPATH=/app/
+    volumes:  
+    - ../AEYE_Router/:/app/AEYE_Router
     networks:
-      - ai_network
-    command: python manage.py
-
+      - aeye_network
+    command: python manage.py runserver 0.0.0.0:2000
+  AEYE-SQL:
+    image: mysql:5.7
+    container_name: web_sql_container
+    environment:
+      MYSQL_ROOT_PASSWORD: my-secret-pw
+      MYSQL_DATABASE: mydatabase
+      MYSQL_USER: myuser
+      MYSQL_PASSWORD: mypassword
+    volumes:
+      - ../AEYE_MYSQL:/var/lib/mysql
+  ports:
+  - "3306:3306"
+    
 networks:
-  ai_network:
+  aeye_network:
     driver: bridge
