@@ -20,8 +20,9 @@ The AEYE Web Router consists of AEYE HAL, AEYE Software Package, AEYE Middleware
 
 
 ## Pre-requsite
-- Linux  
-- NVIDIA Graphics card   
+- AEYE AI Driver     
+- AEYE Front      
+- AEYE SQL    
 
 
 
