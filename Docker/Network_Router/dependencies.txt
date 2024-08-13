@@ -34,3 +34,5 @@ mysqlclient
 
 asyncio
 aiohttp
+
+setuptools
