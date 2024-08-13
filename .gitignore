@@ -1,0 +1,20 @@
+
+
+
+################################################
+# PyCache
+/AEYE_Router/AEYE_Router/__pycache__/*
+
+/AEYE_Router/api/__pycache__/*
+/AEYE_Router/api/views/__pycache__/*
+
+/AEYE_Router/hal/__pycache__/*
+/AEYE_Router/hal/views/__pycache__/*
+
+/AEYE_Router/mw/__pycache__/*
+/AEYE_Router/mw/views/__pycache__/*
+
+################################################
+# Images
+/AEYE_Router/media/images/*
+
